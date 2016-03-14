@@ -14,11 +14,13 @@
 </head>
 <body>
 <h2>Meal list</h2>
+<a href="<jstl:url value="/meals?action=create"/>">Create new meal</a>
 <table style="width:100%">
     <tr>
         <th>Date</th>
         <th>Description</th>
         <th>Calories</th>
+        <th></th>
         <th></th>
     </tr>
     <jsp:useBean id="meals" scope="request" type="java.util.List"/>
@@ -36,6 +38,7 @@
         <td>${meal.description}</td>
         <td>${meal.calories}</td>
         <td><a href="<jstl:url value="/meals?action=edit&id=${meal.id}"/>">Edit</a></td>
+        <td><a href="<jstl:url value="/meals?action=delete&id=${meal.id}"/>">Delete</a></td>
         </tr>
     </c:forEach>
 </table>

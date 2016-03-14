@@ -34,8 +34,7 @@ public class MapUserMealDAOImpl implements UserMealDAO {
         return id;
     }
 
-    @Override
-    public UserMeal create(UserMeal userMeal) {
+    private UserMeal create(UserMeal userMeal) {
         userMeal.setId(++id);
         repository.put(userMeal.getId(), userMeal);
         LOG.debug("New UserMeal created with id=" + getId());
@@ -53,8 +52,13 @@ public class MapUserMealDAOImpl implements UserMealDAO {
     }
 
     @Override
-    public void update(UserMeal userMeal) {
-        repository.put(userMeal.getId(), userMeal);
+    public UserMeal update(UserMeal userMeal) {
+        if (userMeal.getId()==0){
+            userMeal =  create(userMeal);
+        }else {
+            repository.put(userMeal.getId(), userMeal);
+        }
+        return userMeal;
     }
 
     @Override
