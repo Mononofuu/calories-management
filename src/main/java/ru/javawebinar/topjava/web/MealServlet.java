@@ -3,6 +3,8 @@ package ru.javawebinar.topjava.web;
 import org.slf4j.Logger;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.model.UserMealWithExceed;
+import ru.javawebinar.topjava.repository.MapUserMealDAOImpl;
+import ru.javawebinar.topjava.repository.UserMealDAO;
 import ru.javawebinar.topjava.util.UserMealsUtil;
 
 import javax.servlet.ServletException;
@@ -20,14 +22,41 @@ import static org.slf4j.LoggerFactory.getLogger;
  */
 public class MealServlet extends HttpServlet {
     private static final Logger LOG = getLogger(MealServlet.class);
+    private static final UserMealDAO userMealDAO = new MapUserMealDAOImpl();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String action = request.getParameter("action") == null ?"":request.getParameter("action");
+        LOG.debug("Action: " + action);
+        String id = request.getParameter("id");
+        switch (action){
+            case "edit": {
+                request.setAttribute("meal", userMealDAO.read(Integer.parseInt(id)));
+                request.getRequestDispatcher("/mealEdit.jsp").forward(request, response);
+                return;
+            }
+            default:
+        }
+
         LOG.debug("redirect to userList");
-        List<UserMeal> mealList = UserMealsUtil.getMealList();
+        List<UserMeal> mealList = userMealDAO.readAll();
         List<UserMealWithExceed> userMealsWithExceeded = UserMealsUtil.getFilteredMealsWithExceeded(mealList, LocalTime.of(0, 0), LocalTime.of(23, 0), 2000);
         request.setAttribute("meals", userMealsWithExceeded);
         LOG.debug("Founded meals: " + userMealsWithExceeded.size());
         LOG.debug("forward to userList");
         request.getRequestDispatcher("/mealList.jsp").forward(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        LOG.debug("POST");
+        LOG.debug(request.getParameter("id"));
+        LOG.debug(request.getParameter("calories"));
+        LOG.debug(request.getParameter("description"));
+        UserMeal userMeal = userMealDAO.read(Integer.parseInt(request.getParameter("id")));
+        userMeal.setCalories(Integer.parseInt(request.getParameter("calories")));
+        userMeal.setDescription(request.getParameter("description"));
+        userMealDAO.update(userMeal);
+        response.sendRedirect("meals");
     }
 }

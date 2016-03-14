@@ -19,6 +19,7 @@
         <th>Date</th>
         <th>Description</th>
         <th>Calories</th>
+        <th></th>
     </tr>
     <jsp:useBean id="meals" scope="request" type="java.util.List"/>
     <c:forEach items="${meals}" var="meal">
@@ -34,6 +35,7 @@
         <td>${meal.dateTime}</td>
         <td>${meal.description}</td>
         <td>${meal.calories}</td>
+        <td><a href="<jstl:url value="/meals?action=edit&id=${meal.id}"/>">Edit</a></td>
         </tr>
     </c:forEach>
 </table>

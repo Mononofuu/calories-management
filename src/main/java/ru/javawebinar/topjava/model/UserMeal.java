@@ -8,15 +8,21 @@ import java.time.LocalDateTime;
  */
 public class UserMeal {
     protected final LocalDateTime dateTime;
-
-    protected final String description;
-
-    protected final int calories;
-
+    protected String description;
+    protected int calories;
+    protected int id;
     public UserMeal(LocalDateTime dateTime, String description, int calories) {
         this.dateTime = dateTime;
         this.description = description;
         this.calories = calories;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public LocalDateTime getDateTime() {
@@ -27,7 +33,15 @@ public class UserMeal {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public int getCalories() {
         return calories;
+    }
+
+    public void setCalories(int calories) {
+        this.calories = calories;
     }
 }
