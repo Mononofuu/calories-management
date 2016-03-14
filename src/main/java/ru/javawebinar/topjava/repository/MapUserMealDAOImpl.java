@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -17,7 +18,7 @@ import static org.slf4j.LoggerFactory.getLogger;
  */
 public class MapUserMealDAOImpl implements UserMealDAO {
     private static final Logger LOG = getLogger(MapUserMealDAOImpl.class);
-    private int id;
+    private AtomicInteger counter = new AtomicInteger();
     private Map<Integer, UserMeal> repository = new ConcurrentHashMap<>();
 
     {
@@ -31,12 +32,11 @@ public class MapUserMealDAOImpl implements UserMealDAO {
     }
 
     public int getId() {
-        return id;
+        return counter.get();
     }
 
-    @Override
-    public UserMeal create(UserMeal userMeal) {
-        userMeal.setId(++id);
+    private UserMeal create(UserMeal userMeal) {
+        userMeal.setId(counter.incrementAndGet());
         repository.put(userMeal.getId(), userMeal);
         LOG.debug("New UserMeal created with id=" + getId());
         return userMeal;
@@ -53,8 +53,13 @@ public class MapUserMealDAOImpl implements UserMealDAO {
     }
 
     @Override
-    public void update(UserMeal userMeal) {
-        repository.put(userMeal.getId(), userMeal);
+    public UserMeal update(UserMeal userMeal) {
+        if (userMeal.getId()==0){
+            userMeal =  create(userMeal);
+        }else {
+            repository.put(userMeal.getId(), userMeal);
+        }
+        return userMeal;
     }
 
     @Override

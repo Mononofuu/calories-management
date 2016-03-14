@@ -8,9 +8,8 @@ import java.util.List;
  * created by Alekseichenko Sergey <mononofuu@gmail.com>
  */
 public interface UserMealDAO {
-    UserMeal create(UserMeal userMeal);
     UserMeal read(int id);
     List<UserMeal> readAll();
-    void update(UserMeal userMeal);
+    UserMeal update(UserMeal userMeal);
     void delete(int id);
 }
