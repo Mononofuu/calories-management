@@ -73,6 +73,7 @@
    -  <a href="http://stackoverflow.com/questions/6827752/whats-the-difference-between-component-repository-service-annotations-in">Difference
        between @Component, @Repository & @Service annotations in Spring</a>
    -  <a href="http://www.mkyong.com/spring/spring-auto-scanning-components/">Spring Auto Scanning Components</a>
+   -  <a href="http://www.seostella.com/ru/article/2012/02/12/ispolzovanie-annotacii-autowired-v-spring-3.html">Использование аннотации @Autowired</a>
 
 -  Справочник:
    -  <a href="http://image.slidesharecdn.com/springintroduction-130729220359-phpapp01/95/spring-introduction-3-638.jpg?cb=1375162442">DI/ Service Locator</a>
@@ -102,30 +103,56 @@
 На многих проектах (и собеседованиях) практикуют разделение на уровне maven модулей entity слоя от логики и соответствующей конвертацией ВСЕХ Entity в TO, даже если у них те же самые поля.
 Хороший ответ когда TO объязательны есть на <a href="http://stackoverflow.com/questions/21554977/should-services-always-return-dtos-or-can-they-also-return-domain-models#21569720">Stackoverflow: When to Use</a>.
 
+> Что такое схема в spring-app.xml xsi:schemaLocation и зачем она нужна
+
+<a href="https://ru.wikipedia.org/wiki/XML_Schema">XML схема</a> нужна для валидации xml, IDEA делает по ней атвозаполнение.
+
+> Почему контроллеры положили в папку web, а не в conrollers?
+
+Тоже самое что domain/model - просто разные названия. web думаю даже чаще называют (например в spring petclinic)
+
+> Что означает для Spring
+
+         <bean class="ru.javawebinar.topjava.service.UserServiceImpl">
+             <property name="repository" ref="mockUserRepository"/>
+         </bean> ?
+
+Можно сказать так: создай и занеси в свой контекст бин UserServiceImpl и заинжекть в его проперти из своего контекста бин mockUserRepository.
+
+> Как биндинг происходит для `@Autowired`? Как поступать, если у нас больше одной реализации `UserRepository`?
+
+`@Autowired`  инжектит по типу (т.е. ижектит класс который наследует `UserRepository`). Обычно он один. Если у нас несколько реализаций, Spring не поднимится и поругается - No unique bean. В этом случае <a href="http://www.mkyong.com/spring/spring-autowiring-qualifier-example/">можно уточнить имя бина через @Qualifier</a>. `@Qualifier` обычно добавляют только в случае нескольких реализаций.
+
+> Зачем мы наследуем NotFoundException от RuntimeException?
+
+Так с ним удобнее работать. И у нас нет никаких действий по восстановлению состояния приложения (no recoverable conditions): <a href="http://stackoverflow.com/questions/6115896/java-checked-vs-unchecked-exception-explanation">checked vs unchecked exception</a>
+
 --------------------
 
 ## ![hw](https://cloud.githubusercontent.com/assets/13649199/13672719/09593080-e6e7-11e5-81d1-5cb629c438ca.png) Домашнее задание HW02
 
-    - Имплементировать InMemoryUserRepositoryImpl  по аналогии с InMemoryUserMealRepositoryImpl
-                                                     (список пользователей возвращать отсортированным по имени)
-  
-    - Сделать реализацию слоев приложения для функциональности "еда":
+    1. Рефакторинг репозиториев:
+       -  переименовать MockUserRepositoryImpl в InMemoryUserRepositoryImpl и имплементировать по аналогии с
+                            InMemoryUserMealRepositoryImpl (список пользователей возвращать отсортированным по имени)
+                              
        - зарефакторить UserMealRepository/InMemoryUserMealRepositoryImpl:
           - еда принадлежит пользователю
-          - список еды возвращать отсортированным по времени
+          - список еды возвращать отсортированным по времени, последние записи наверху
           - если еда отсутствует или чужая, возвращать null/false (см. UserRepository)
-
-       - API должна удовлетворять все потребности демо приложения и ничего лишнего (см. http://topjava.herokuapp.com)
-       - после авторизации запрос попадает в контроллер, методы которого будут доступны снаружи по http
+  
+    2. Сделать реализацию слоев приложения для функциональности "еда":
+       - API контроллера должна удовлетворять все потребности демо приложения и ничего лишнего
+                                                                           (см. http://topjava.herokuapp.com)
+       - после авторизации запрос попадает в контроллер, методы которого будут доступны снаружи по http,
+         т.е. в запросе может прийти id для еды, не принадлежащее авторизированному пользователю
                     (id авторизованного юзера попадает (сделаем позже) в LoggedUser.id(), см. ProfileRestController).
-         Пока обращаемся к контроллеру через сервлет, но он проектируется так, 
-             что дальше будем работаем с ним напрямую, т.е. List<UserMealWithExceed> должен отдаваться из контроллера.
-         UserMealWithExceed переносим в пакет to (transfer objects), 
+         Нельзя позволять модифицировать/смотреть чужую еду:
+              - у еды есть УНИКАЛЬНОЕ id, по которому можно определить из базы, чья она;
+              - если еда не принадлежит авторизированному пользователю или отсутствует, то бросать NotFoundException.
+                    
+       - UserMealWithExceed переносим в пакет to (transfer objects)
 
-       - нельзя позволять модифицировать/смотреть чужую еду. Контроллеры смотрят наружу,
-         в запросе может прийти любое id. Проверять: если еда чужая или отсутствует, то бросать NotFoundException.
-
-    - Включить классы в контекст Spring и вызвать из SpringMain методы UserMealRestController
+    3. Включить классы в контекст Spring и проверить из SpringMain вызов метода UserMealRestController
 
 Примечания:
 
@@ -137,25 +164,26 @@
 
 Optional 
 
-    - Сделать инициализацию Spring и вызов UserMealRestController из MealServlet 
-                                         (НЕ менять в pom.xml, работаем со spring-context)
+    1. В MealServlet сделать инициализацию Spring, достать UserMealRestController из контекста 
+       и работать с едой через него (см. SpringMain. pom.xml НЕ менять, работаем со spring-context).
     
-    - Добавить в mealList.jsp и MealServlet фильтрацию еды по дате и времени (см. демо)
+    2. Добавить в mealList.jsp и MealServlet две отдельные фильтрации еды: по дате и по времени (см. демо)
     
-    - Добавить выбор текущего залогиненного пользователя (имитация авторизации)
+    3. Добавить выбор текущего залогиненного пользователя (имитация авторизации)
       (например захардкодить 1,2 в index.html select и сделать LoggedUser.setId(userId) в UserServlet).
 
 ---------------------
-### ![error](https://cloud.githubusercontent.com/assets/13649199/13672935/ef09ec1e-e6e7-11e5-9f79-d1641c05cbe6.png) Подсказки по HW02 (для проверки, лучше сначала сделать API самостоятельно)
+### ![error](https://cloud.githubusercontent.com/assets/13649199/13672935/ef09ec1e-e6e7-11e5-9f79-d1641c05cbe6.png) Подсказки по HW02 (для проверки, сначала сделайте самостоятельно!)
 
 - UserMealRestController должен уметь обрабатывать запросы:
-
-    - Отдать свою еду (для отображения в таблице, формат List<UserMealWithExceed>), запрос БЕЗ параметров
+    - Отдать свою еду (для отображения в таблице, формат `List<UserMealWithExceed>`), запрос БЕЗ параметров
     - Отдать свою еду, отфильтрованную по startDate, startTime, endDate, endTime
     - Отдать/удалить свою еду по id, параметр запроса - id еды. 
-                        Если еда с этим id чужая или отсутствует - NotFoundException
-    - Сохранить/обновить еду, параметр запроса - UserMeal, сконструированный из id, dateTime, description, calories
-         (без User/userId). Если обновляемая еда с этим id чужая или отсутствует - NotFoundException
-    - Т.к. контроллер позволяет управлять ТОЛЬКО своей едой, userId снаружи не приходит (см ProfileRestController). 
-
-- Закрывать springContext в сервлете грамотнее всего в `HttpServlet.destroy()`
+                        Если еда с этим id чужая или отсутствует - `NotFoundException`
+    - Сохранить/обновить еду, параметр запроса - UserMeal. Если обновляемая еда с этим id чужая или отсутствует - NotFoundException
+- Т.к. контроллер позволяет управлять ТОЛЬКО своей едой, `userId` снаружи не приходит (см. `ProfileRestController`)
+- Сервлет мы удалим, а контроллер останется, поэтому возвращать `List<UserMealWithExceed>` надо из контроллера
+- Закрывать springContext в сервлете грамотнее всего в `HttpServlet.destroy()`: если где-то в контексте Spring будет ленивая инициализация, метод-фабрика, не синглетон-scope, то контекст понадобится при работе приложения. У нас такого нет, но делать надо все грамотно.
+- `UserMeal` хорошо бы отнаследовать от `BaseEntity`
+- Фильтрацию по датам правильнее опустить на уровень репозитория т.к. из базы будем брать сразу отфильтрованные по дням записи. Следите чтобы первый и последний день не были обрезаны, иначе сумма калорий будет неверная.
+- Проверьте корректную обработку пустых значений date и time в контроллере
