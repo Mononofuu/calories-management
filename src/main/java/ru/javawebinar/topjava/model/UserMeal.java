@@ -6,28 +6,27 @@ import java.time.LocalDateTime;
  * GKislin
  * 11.01.2015.
  */
-public class UserMeal {
+public class UserMeal implements Comparable<UserMeal>{
+    private final LocalDateTime dateTime;
+    private final String description;
+    private final int calories;
+    private final int userId;
     private Integer id;
 
-    private final LocalDateTime dateTime;
-
-    private final String description;
-
-    private final int calories;
-
-    public UserMeal(LocalDateTime dateTime, String description, int calories) {
-        this(null, dateTime, description, calories);
+    public UserMeal(LocalDateTime dateTime, String description, int calories, int userId) {
+        this(null, dateTime, description, calories, userId);
     }
 
-    public UserMeal(Integer id, LocalDateTime dateTime, String description, int calories) {
+    public UserMeal(Integer id, LocalDateTime dateTime, String description, int calories, int userId) {
         this.id = id;
         this.dateTime = dateTime;
         this.description = description;
         this.calories = calories;
+        this.userId = userId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public int getUserId() {
+        return userId;
     }
 
     public LocalDateTime getDateTime() {
@@ -46,6 +45,10 @@ public class UserMeal {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public boolean isNew() {
         return id == null;
     }
@@ -58,5 +61,10 @@ public class UserMeal {
                 ", description='" + description + '\'' +
                 ", calories=" + calories +
                 '}';
+    }
+
+    @Override
+    public int compareTo(UserMeal o) {
+        return o.getDateTime().compareTo(getDateTime());
     }
 }
