@@ -4,6 +4,8 @@
 <html>
 <head>
     <title>Meal list</title>
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"
+          rel="stylesheet" type="text/css"/>
     <style>
         .normal {
             color: green;
@@ -20,6 +22,16 @@
     <h3>Meal list</h3>
     <a href="meals?action=create">Add Meal</a>
     <hr>
+    <h3>Фильтры</h3>
+    <form action="meals" method="post">
+        <div>
+            <h4>From date</h4>
+            <input type="date" name="dateFrom"/>
+            <h4>To date</h4>
+            <input type="date" name="dateTo"/>
+        </div>
+
+    </form>
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
         <tr>

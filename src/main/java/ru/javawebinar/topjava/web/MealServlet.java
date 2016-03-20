@@ -8,6 +8,7 @@ import ru.javawebinar.topjava.LoggedUser;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.service.UserMealService;
 import ru.javawebinar.topjava.util.UserMealsUtil;
+import ru.javawebinar.topjava.web.meal.UserMealRestController;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -25,7 +26,7 @@ public class MealServlet extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(MealServlet.class);
 
     private static ConfigurableApplicationContext context = new ClassPathXmlApplicationContext("spring/spring-app.xml");
-    private UserMealService mealService = context.getBean(UserMealService.class);
+    private UserMealRestController userController = context.getBean(UserMealRestController.class);
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
@@ -35,7 +36,7 @@ public class MealServlet extends HttpServlet {
                 request.getParameter("description"),
                 Integer.valueOf(request.getParameter("calories")), LoggedUser.id());
         LOG.info(userMeal.isNew() ? "Create {}" : "Update {}", userMeal);
-        mealService.save(userMeal);
+        userController.save(userMeal);
         response.sendRedirect("meals");
     }
 
@@ -45,17 +46,17 @@ public class MealServlet extends HttpServlet {
         if (action == null) {
             LOG.info("getAll");
             request.setAttribute("mealList",
-                    UserMealsUtil.getWithExceeded(mealService.getAll(LoggedUser.id()), UserMealsUtil.DEFAULT_CALORIES_PER_DAY));
+                    UserMealsUtil.getWithExceeded(userController.getAll(), UserMealsUtil.DEFAULT_CALORIES_PER_DAY));
             request.getRequestDispatcher("/mealList.jsp").forward(request, response);
         } else if (action.equals("delete")) {
             int id = getId(request);
             LOG.info("Delete {}", id);
-            mealService.delete(id, LoggedUser.id());
+            userController.delete(id);
             response.sendRedirect("meals");
         } else {
             final UserMeal meal = action.equals("create") ?
                     new UserMeal(LocalDateTime.now(), "", 1000, LoggedUser.id()) :
-                    mealService.get(getId(request), LoggedUser.id());
+                    userController.get(getId(request));
             request.setAttribute("meal", meal);
             request.getRequestDispatcher("mealEdit.jsp").forward(request, response);
         }
