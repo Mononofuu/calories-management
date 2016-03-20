@@ -6,12 +6,11 @@ import java.time.LocalDateTime;
  * GKislin
  * 11.01.2015.
  */
-public class UserMeal implements Comparable<UserMeal>{
+public class UserMeal extends BaseEntity implements Comparable<UserMeal>{
     private final LocalDateTime dateTime;
     private final String description;
     private final int calories;
     private final int userId;
-    private Integer id;
 
     public UserMeal(LocalDateTime dateTime, String description, int calories, int userId) {
         this(null, dateTime, description, calories, userId);
@@ -39,18 +38,6 @@ public class UserMeal implements Comparable<UserMeal>{
 
     public int getCalories() {
         return calories;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public boolean isNew() {
-        return id == null;
     }
 
     @Override

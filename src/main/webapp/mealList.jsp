@@ -4,8 +4,7 @@
 <html>
 <head>
     <title>Meal list</title>
-    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"
-          rel="stylesheet" type="text/css"/>
+    <link href="resources/bootstrap.min.css" rel="stylesheet" type="text/css">
     <style>
         .normal {
             color: green;
@@ -23,16 +22,30 @@
     <a href="meals?action=create">Add Meal</a>
     <hr>
     <h3>Фильтры</h3>
-    <form action="meals" method="post">
-        <div>
-            <h4>From date</h4>
-            <input type="date" name="dateFrom"/>
-            <h4>To date</h4>
-            <input type="date" name="dateTo"/>
+    <form action="meals?action=filter" method="post" class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-sm-2">From date</label>
+            <div class="col-sm-2">
+                <input type="date" name="dateFrom"/>
+            </div>
+            <label class="control-label col-sm-2">To date</label>
+            <div class="col-sm-2">
+                <input type="date" name="dateTo"/>
+            </div>
         </div>
-
+        <div class="form-group">
+            <label class="control-label col-sm-2">From time</label>
+            <div class="col-sm-2">
+                <input type="time" name="timeFrom"/>
+            </div>
+            <label class="control-label col-sm-2">To time</label>
+            <div class="col-sm-2">
+                <input type="time" name="timeTo"/>
+            </div>
+        </div>
+        <input type="submit" class="btn">
     </form>
-    <table border="1" cellpadding="8" cellspacing="0">
+    <table class="table">
         <thead>
         <tr>
             <th>Date</th>
