@@ -29,7 +29,7 @@ public class UserMealRestController {
         return UserMealsUtil.getWithExceeded(service.getAll(LoggedUser.getId()), UserMealsUtil.DEFAULT_CALORIES_PER_DAY);
     }
 
-    public Collection<UserMealWithExceed> getAll(LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime) {
+    public Collection<UserMealWithExceed> getBetween(LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime) {
         return UserMealsUtil.getFilteredWithExceededByDates(service.getAll(LoggedUser.getId()), startDate, startTime, endDate, endTime, UserMealsUtil.DEFAULT_CALORIES_PER_DAY);
     }
 

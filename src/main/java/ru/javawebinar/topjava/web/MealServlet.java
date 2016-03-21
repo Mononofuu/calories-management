@@ -60,7 +60,7 @@ public class MealServlet extends HttpServlet {
                 timeTo = LocalTime.parse(timeToValue.get());
             }
             LOG.info("getAllFiltered");
-            request.setAttribute("mealList", mealController.getAll(dateFrom, timeFrom, dateTo, timeTo));
+            request.setAttribute("mealList", mealController.getBetween(dateFrom, timeFrom, dateTo, timeTo));
             request.getRequestDispatcher("/mealList.jsp").forward(request, response);
 
         } else {
@@ -93,7 +93,7 @@ public class MealServlet extends HttpServlet {
             response.sendRedirect("meals");
         } else {
             final UserMeal meal = "create".equals(action) ?
-                    new UserMeal(LocalDateTime.now(), "", 1000, LoggedUser.getId()) :
+                    new UserMeal(LocalDateTime.now().withNano(0).withSecond(0), "", 1000, LoggedUser.getId()) :
                     mealController.get(getId(request));
             request.setAttribute("meal", meal);
             request.getRequestDispatcher("mealEdit.jsp").forward(request, response);

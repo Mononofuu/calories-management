@@ -17,12 +17,13 @@ public class UserMeal extends BaseEntity implements Comparable<UserMeal>{
     }
 
     public UserMeal(Integer id, LocalDateTime dateTime, String description, int calories, int userId) {
-        this.id = id;
+        super(id);
         this.dateTime = dateTime;
         this.description = description;
         this.calories = calories;
         this.userId = userId;
     }
+
 
     public int getUserId() {
         return userId;
