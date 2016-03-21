@@ -35,7 +35,7 @@ public class MealServlet extends HttpServlet {
         context.close();
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
         if ("filter".equals(action)) {
