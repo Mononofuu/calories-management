@@ -8,6 +8,7 @@ import ru.javawebinar.topjava.service.UserMealService;
 import ru.javawebinar.topjava.to.UserMealWithExceed;
 import ru.javawebinar.topjava.util.UserMealsUtil;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collection;
 
@@ -28,8 +29,8 @@ public class UserMealRestController {
         return UserMealsUtil.getWithExceeded(service.getAll(LoggedUser.getId()), UserMealsUtil.DEFAULT_CALORIES_PER_DAY);
     }
 
-    public Collection<UserMealWithExceed> getAll(String startDate, LocalTime startTime, String endDate, LocalTime endTime) {
-        return UserMealsUtil.getFilteredWithExceeded(service.getAll(LoggedUser.getId()), startTime, endTime, UserMealsUtil.DEFAULT_CALORIES_PER_DAY);//TODO
+    public Collection<UserMealWithExceed> getAll(LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime) {
+        return UserMealsUtil.getFilteredWithExceededByDates(service.getAll(LoggedUser.getId()), startDate, startTime, endDate, endTime, UserMealsUtil.DEFAULT_CALORIES_PER_DAY);
     }
 
     public void delete(int id) {
