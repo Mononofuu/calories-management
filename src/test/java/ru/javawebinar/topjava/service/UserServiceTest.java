@@ -21,9 +21,7 @@ import java.util.Collections;
 
 import static ru.javawebinar.topjava.UserTestData.*;
 
-@ContextConfiguration({
-        "classpath:spring/spring-app.xml",
-})
+@ContextConfiguration("classpath:spring/spring-app.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 @Ignore
 public class UserServiceTest {
