@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
  * 15.06.2015.
  */
 @Repository
-@Profile("test")
 public class InMemoryUserRepositoryImpl implements UserRepository {
     private static final Logger LOG = LoggerFactory.getLogger(InMemoryUserRepositoryImpl.class);
 
