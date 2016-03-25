@@ -67,7 +67,9 @@ public class UserMealServiceTest {
 
     @Test(expected = NotFoundException.class)
     public void updateWrongUser() throws Exception {
-        //TODO
+        UserMeal userMeal = mealService.get(MEAL_USER2_ID, USER_ID);
+        userMeal.setCalories(3000);
+        mealService.update(userMeal, ADMIN_ID);
     }
 
     @Test
@@ -75,7 +77,7 @@ public class UserMealServiceTest {
         Collection<UserMeal> mealCollection = mealService.getBetweenDates(LocalDate.parse("2016-03-24",
                 DateTimeFormatter.ofPattern("yyyy-MM-dd")), LocalDate.parse("2016-03-24",
                 DateTimeFormatter.ofPattern("yyyy-MM-dd")), USER_ID);
-        MATCHER.assertCollectionEquals(Arrays.asList(MEAL_USER2), mealCollection);
+        MATCHER.assertCollectionEquals(Collections.singletonList(MEAL_USER2), mealCollection);
     }
 
     @Test
