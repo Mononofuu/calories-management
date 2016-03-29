@@ -26,7 +26,8 @@ public class JpaUserMealRepositoryImpl implements UserMealRepository {
     @Override
     @Transactional
     public UserMeal save(UserMeal userMeal, int userId) {
-        User user = em.find(User.class, userId);
+//        User user = em.find(User.class, userId); // get full object
+        User user = em.getReference(User.class, userId); // we get only proxy with primary key initialized
         if (userMeal.isNew()) {
             userMeal.setUser(user);
             em.persist(userMeal);
