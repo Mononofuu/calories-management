@@ -3,6 +3,7 @@
 ## ![hw](https://cloud.githubusercontent.com/assets/13649199/13672719/09593080-e6e7-11e5-81d1-5cb629c438ca.png) Разбор домашнего задания HW3
 
 ### ![video](https://cloud.githubusercontent.com/assets/13649199/13672715/06dbc6ce-e6e7-11e5-81a9-04fbddb9e488.png) <a href="https://drive.google.com/open?id=0B9Ye2auQ_NsFdVhaMklZQVNkUGc">JdbcUserMealRepositoryImpl + UserMealServiceTest</a>
+- <a href="http://www.techonthenet.com/postgresql/between.php">POSTGRESQL: BETWEEN CONDITION</a>
 - **<a href="https://drive.google.com/open?id=0B9Ye2auQ_NsFeW1lR0JwY2ZpWHc">1-HW3.patch</a>**
 
 > Новый Postgres драйвер <a href="https://jdbc.postgresql.org/documentation/head/8-date-time.html">поддерживает Java 8 Date and Time</a>. Преобразования c Timestamp оказались уже не нужны. Мне кажется хороший пример того, что все надо проверять самим, а не верить на слово:)
@@ -26,7 +27,7 @@
 ## Занятие 4:
 ### ![video](https://cloud.githubusercontent.com/assets/13649199/13672715/06dbc6ce-e6e7-11e5-81a9-04fbddb9e488.png) 1. <a href="https://drive.google.com/open?id=0B9Ye2auQ_NsFU005ZzBNZmZnTVU">Улучшаем качество кода</a>
 - **<a href="https://drive.google.com/open?id=0B9Ye2auQ_NsFQVFxSUdpLUd1WE0">3-improve-code.patch</a>**
-- <a href="http://www.sw-engineering-candies.com/blog-1/comparison-of-ways-to-check-preconditions-in-java">Контрактное программирование</a>, <a href="http://neerc.ifmo.ru/wiki/index.php?title=Программирование_по_контракту">Программирование по контракту</a>
+- <a href="https://ru.wikipedia.org/wiki/Контрактное_программирование">Контрактное программирование</a>, <a href="http://neerc.ifmo.ru/wiki/index.php?title=Программирование_по_контракту">Программирование по контракту</a>
 - <a href="http://www.sw-engineering-candies.com/blog-1/comparison-of-ways-to-check-preconditions-in-java">Comparison Preconditions in Java</a>
 - <a href="https://code.google.com/archive/p/findbugs/wikis/IntellijFindBugsPlugins.wiki">QAPlug vs FindBugs</a>
 - <a href="http://qaplug.com/about/tutorials/">QAPlug tutorials</a>
@@ -34,7 +35,6 @@
 
 ### ![video](https://cloud.githubusercontent.com/assets/13649199/13672715/06dbc6ce-e6e7-11e5-81a9-04fbddb9e488.png) 2. <a href="https://drive.google.com/open?id=0B9Ye2auQ_NsFU0Z2R190eDllYmM">Spring: инициализация и популирование DB</a>
 - **<a href="https://drive.google.com/open?id=0B9Ye2auQ_NsFQVNzRl9oS2I5VTA">4-init-and-populate-db.patch</a>**
-> - IDEA может `${jdbc.initLocation}` подчеркивать красным - иногда тупит... Главное- чтобы приложение работало.
 > - `@Sql` в тестах заменяет `@Before public void setUp()`, те выполняется перед каждым тестом
 
 -  <a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/jdbc.html#jdbc-initializing-datasource-xml">Инициализация базы при старте приложения</a>
@@ -46,6 +46,8 @@
 
 ### ![video](https://cloud.githubusercontent.com/assets/13649199/13672715/06dbc6ce-e6e7-11e5-81a9-04fbddb9e488.png) 4. <a href="https://drive.google.com/open?id=0B9Ye2auQ_NsFVWZYcHoyUF9qX2M">ORM. Hibernate. JPA.</a>
 > ВНИМАНИЕ: патч меняет postgres.properties, в котором у вас свои креденшелы к базе.
+
+> Тесты и приложение ломаются. `UserMealServiceTest` починится после выполнения HW04 (`JpaUserMealRepositoryImpl`)
 
 -  **<a href="https://drive.google.com/open?id=0B9Ye2auQ_NsFT0JoR0I1UGxycnc">6-add-jpa.patch</a>**
 >  Upgrade Hibernate to 5.0.4 needed to add `javax.transaction.jta`, see <a href="https://hibernate.atlassian.net/browse/HHH-10307">5.0.4 requires javax.transaction.SystemException</a>
@@ -91,9 +93,12 @@
 
 
 ###  ![video](https://cloud.githubusercontent.com/assets/13649199/13672715/06dbc6ce-e6e7-11e5-81a9-04fbddb9e488.png) 5. <a href="https://drive.google.com/open?id=0B9Ye2auQ_NsFSTJEQ1Rvd3Jvc2c">Добавляем поддержку HSQLDB</a>
->  ВНИМАНИЕ: патч меняет postgres.properties
 
 - **<a href="https://drive.google.com/open?id=0B9Ye2auQ_NsFNE9lNlhFTEx0ZTA">8-add-hsqldb.patch</a>**
+
+>  ВНИМАНИЕ: патч меняет postgres.properties
+
+> IDEA может `${jdbc.initLocation}` подчеркивать красным - иногда тупит...
 
 ## ![question](https://cloud.githubusercontent.com/assets/13649199/13672858/9cd58692-e6e7-11e5-905d-c295d2a456f1.png) Ваши вопросы
 
