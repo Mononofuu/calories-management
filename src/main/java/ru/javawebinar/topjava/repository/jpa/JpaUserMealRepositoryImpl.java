@@ -44,7 +44,7 @@ public class JpaUserMealRepositoryImpl implements UserMealRepository {
     @Override
     @Transactional
     public boolean delete(int id, int userId) {
-        return em.createQuery("delete from UserMeal m where m.id = :id and m.user.id = :userId").setParameter("id", id).setParameter("userId", userId).executeUpdate() != 0;
+        return em.createNamedQuery("Meal.delete").setParameter("id", id).setParameter("userId", userId).executeUpdate() != 0;
     }
 
     @Override
@@ -55,12 +55,12 @@ public class JpaUserMealRepositoryImpl implements UserMealRepository {
 
     @Override
     public List<UserMeal> getAll(int userId) {
-        return em.createQuery("select m from UserMeal m where m.user.id=:userId order by m.dateTime desc ", UserMeal.class).setParameter("userId", userId).getResultList();
+        return em.createNamedQuery("Meal.getAll", UserMeal.class).setParameter("userId", userId).getResultList();
     }
 
     @Override
     public List<UserMeal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId) {
-        return em.createQuery("select m from UserMeal m where m.user.id=:userId and  m.dateTime >= :start and m.dateTime <=:end order by m.dateTime desc", UserMeal.class)
+        return em.createNamedQuery("Meal.getAllBetween", UserMeal.class)
                 .setParameter("userId", userId).setParameter("start", startDate).setParameter("end", endDate).getResultList();
     }
 }

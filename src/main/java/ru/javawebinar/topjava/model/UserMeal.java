@@ -9,6 +9,11 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(name = "meals", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "date_time"}, name = "meals_unique_user_datetime_idx")})
+@NamedQueries({
+        @NamedQuery(name = "Meal.delete", query = "delete from UserMeal m where m.id = :id and m.user.id = :userId"),
+        @NamedQuery(name = "Meal.getAll", query = "select m from UserMeal m where m.user.id=:userId order by m.dateTime desc"),
+        @NamedQuery(name = "Meal.getAllBetween", query = "select m from UserMeal m where m.user.id=:userId and  m.dateTime >= :start and m.dateTime <=:end order by m.dateTime desc")
+})
 public class UserMeal extends BaseEntity {
 
     protected int calories;
