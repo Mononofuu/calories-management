@@ -167,7 +167,7 @@ Optional
       Тестовый класс-обертка к `UserMeal` не требуется, сравниваем данные через готовый MATCHER (toString)
     - Сделать `UserMealServiceTest` из `UserMealService` (Ctrl+Shift+T и выбрать JUnit4) и реализовать тесты.
     - Сделаеть тесты на чужих юзеров (delete, get, update) с тем чтобы получить `NotFoundException`
-    - Предложить решение, как почнинить `SpringMain/ InMemoryAdminRestControllerTest/ InMemoryAdminRestControllerSpringTest`
+    - Предложить решение, как почнинить SpringMain/ InMemory*Test
     - Сделайте индекс к таблице Meals.
     
 - <a href="http://stackoverflow.com/questions/970562/postgres-and-indexes-on-foreign-keys-and-primary-keys">Postgres and Indexes on Foreign Keys and Primary Keys</a>
