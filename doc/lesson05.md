@@ -39,7 +39,7 @@
   - <a href="http://stackoverflow.com/questions/8490852/spring-transactional-isolation-propagation">Spring @Transactional - isolation, propagation</a>
 
 ### ![video](https://cloud.githubusercontent.com/assets/13649199/13672715/06dbc6ce-e6e7-11e5-81a9-04fbddb9e488.png) 2. <a href="https://drive.google.com/open?id=0B9Ye2auQ_NsFNW0yVWhXcGNPU2M">Профили Maven и Spring</a>
--  **<a href="https://drive.google.com/open?id=0B9Ye2auQ_NsFREpfeTc4SVhKMFk">3-profiles-connection-pool.patch</a>**
+-  **<a href="https://drive.google.com/open?id=0B9Ye2auQ_NsFVTFyR0c0S1hlVjA">3-profiles-connection-pool.patch</a>**
  > Для переключения на HSQLDB необходимо:
  >  - поменять в окне Maven Projects профиль (Profiles) на `hsqldb` и сделать `Reimport All Maven Projects` (1я кнопка)
  >  - поменять в UserServiceTest/UserMealServiceTest `@ActiveProfiles(Profiles.HSQLDB)`
@@ -68,7 +68,7 @@
    -  <a href="https://blog.42.nl/articles/spring-data-jpa-with-querydsl-repositories-made-easy/">Spring Data JPA with QueryDSL</a></li>
 
 ### ![video](https://cloud.githubusercontent.com/assets/13649199/13672715/06dbc6ce-e6e7-11e5-81a9-04fbddb9e488.png) 5. <a href="https://drive.google.com/open?id=0B9Ye2auQ_NsFajd2Y2RLQVVJWUU">Spring кэш</a>
--  **<a href="https://drive.google.com/open?id=0B9Ye2auQ_NsFRzM4c1E5SVBVSDQ">5-spring-cache</a>**
+-  **<a href="https://drive.google.com/open?id=0B9Ye2auQ_NsFRXpnNjhVdkJDc2M">5-spring-cache</a>**
 
 -  <a href="http://habrahabr.ru/post/113945/">Кеширование в Spring Framework</a>
 -  <a href="http://www.ehcache.org/">EHCACHE</a>
