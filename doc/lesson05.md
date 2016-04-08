@@ -45,11 +45,11 @@
  >  - поменять в UserServiceTest/UserMealServiceTest `@ActiveProfiles(Profiles.HSQLDB)`
 
 - <a href="https://dzone.com/articles/using-spring-profiles-xml">Using Spring Profiles in XML Config</a>
+> Галочка в XML профиле влияет только на отображение в Spring и никак на выполнение кода.
 
 ### ![video](https://cloud.githubusercontent.com/assets/13649199/13672715/06dbc6ce-e6e7-11e5-81a9-04fbddb9e488.png) 3. <a href="https://drive.google.com/open?id=0B9Ye2auQ_NsFTWJOdHduOWtNcTA">Пул коннектов</a>
 
 -  Выбор реализации пула коннектов: <a href="http://jolbox.com/">BoneCP</a>, <a href="http://commons-dbcp.apache.org">Commons Database Connection Pooling</a>, <a href="https://github.com/brettwooldridge/HikariCP">HikariCP</a>
--  <a href="http://blog.trustiv.co.uk/2014/06/battle-connection-pools">Battle of the Connection Pools</a>
 -  <a href="http://blog.ippon.fr/2013/03/13/improving-the-performance-of-the-spring-petclinic-sample-application-part-3-of-5">Tomcat pool</a>
 
 ### ![video](https://cloud.githubusercontent.com/assets/13649199/13672715/06dbc6ce-e6e7-11e5-81a9-04fbddb9e488.png) 4. <a href="https://drive.google.com/open?id=0B9Ye2auQ_NsFYVdyMFYxRUR6bWM">Spring Data JPA</a>
@@ -92,14 +92,15 @@
 
 Optional
 
-     Починить MealServlet / SpringMain (добавить профили)
+     Починить MealServlet / SpringMain (добавить профили. 
+                      Попробуйте поднять Spring контекст без использования `spring.profiles.activ`).
 
      Сделать и протестировать в сервисах методы (можно сделать разные варианты, реализация только в DataJpa):
      -  достать по id пользователя вместе с его едой
      -  достать по id еду вместе с пользователем
      Обращения к DB сделать в одной транзакции
-
-     В DataJpaUserMealRepositoryImpl.save попробуйте как упражнение обойтись одним вызовом proxy.save(userMeal)
+     
+     Почините JDBC реализацию для HSQLDB, можно также разнести ее по профилям.
 
 ## ![question](https://cloud.githubusercontent.com/assets/13649199/13672858/9cd58692-e6e7-11e5-905d-c295d2a456f1.png) Ваши вопросы
 > В <a href="https://github.com/spring-projects/spring-petclinic/tree/master/src/main/java/org/springframework/samples/petclinic/repository/springdatajpa">spring-petclinic</a> DataJpa реализована без проксирования и без доп. классов. В таком виде как у них, spring data смотрится, конечно, намного лаконичней других реализаций, но у нас получилось  вдвое больше кода, чем с тем же jpa или jdbc. Плюс только пожалуй в том, что query находятся прямо в репозитории, а  не где-то там в другом пакете. Так что получается, spring data лучше подходит для простейших crud без всяких "фишек"? или в чем его достоинство для больших и сложных проектов?
@@ -118,4 +119,6 @@ Optional
 - Для того, чтобы не запускались родительские классы тестов нужно сделать их `abstract`
 - Для IDEA не забудте выставить в `spring-db.xml` справа вверху в Change Profiles... профили, например `datajpa, postgres`
 - Общие части для всех в `spring-db.xml` можно оставить как есть без профилей, но до первого `<beans profile=` (вверху файла).
-- Починка MealServlet/SpringMain: попробуйте поднять Spring контекст с профилями без использования `spring.profiles.activ`. Когда делаете `setActiveProfiles` контекст спринга еще не должен быть инициализирован, иначе выставление профиля уже ничего не будет делать.
+- В MealServlet/SpringMain в момент `setActiveProfiles` контекст спринга еще не должен быть инициализирован, иначе выставление профиля уже ничего не будет делать.
+- Если у метода нет реализации, то стандартно бросается `OperationNotSupportedException`.
+- Для уменьшения количества кода при реализации Optional попробуйте сделать default метод в интерфейсе
